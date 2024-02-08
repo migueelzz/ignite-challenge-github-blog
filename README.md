@@ -4,3 +4,4 @@
 - Typescript
 - React
 - Styled Components
+- Axios
