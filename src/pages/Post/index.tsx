@@ -1,30 +1,48 @@
+import { useCallback, useContext, useEffect } from 'react'
+import { GitHubContext } from '../../contexts/GitHubContext'
+
+import { NavLink, useParams } from 'react-router-dom'
+
+import ReactMarkdown from 'react-markdown'
+
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale/pt-BR'
+
 import {
   FaCalendarDay,
   FaChevronLeft,
   FaComment,
   FaGithub,
 } from 'react-icons/fa6'
-import { NavLink } from 'react-router-dom'
-import { PostContent, PostInfo } from './styles'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
-const code = `let foo = 42;   // foo is now a number
-foo = 'bar';    // foo is now a string
-foo = true;     // foo is now a boolean
-`
+import { PostContent, PostInfo } from './styles'
 
 export function Post() {
+  const { postId } = useParams()
+  const { post, getIssuesRepoByNumber } = useContext(GitHubContext)
+
+  const getIssues = useCallback(() => {
+    if (postId) {
+      getIssuesRepoByNumber(postId)
+    }
+  }, [postId, getIssuesRepoByNumber])
+
+  useEffect(() => {
+    getIssues()
+  }, [getIssues])
+
   return (
     <div>
       <PostInfo>
         <header>
-          <NavLink to="#">
+          <NavLink to="/">
             <span>
               <FaChevronLeft size={12} />
               voltar
             </span>
           </NavLink>
-          <NavLink to="#">
+          <NavLink to={post.user.html_url} target="_blank">
             <span>
               ver no github
               <FaExternalLinkAlt size={12} />
@@ -32,47 +50,30 @@ export function Post() {
           </NavLink>
         </header>
 
-        <h1>Lorem ipsum dolor sit amet consectetur</h1>
+        <h1>{post?.title}</h1>
         <footer>
           <div>
             <FaGithub />
-            <span>migueelzz</span>
+            <span>{post.user.login}</span>
           </div>
           <div>
             <FaCalendarDay />
-            <span>Há 1 dia</span>
+            <span>
+              {formatDistanceToNow(post.created_at, {
+                addSuffix: true,
+                locale: ptBR,
+              })}
+            </span>
           </div>
           <div>
             <FaComment />
-            <span>5 comentários</span>
+            <span>{post.comments} comentários</span>
           </div>
         </footer>
       </PostInfo>
 
       <PostContent>
-        <div>
-          <p>
-            <strong>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.{' '}
-            </strong>
-            Eum aliquid suscipit perferendis, deleniti unde doloremque dolor
-            dolorem consequatur esse consequuntur expedita reiciendis nulla
-            inventore, nostrum ipsam dicta earum dignissimos tempore!
-          </p>
-
-          <p>
-            <strong>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.{' '}
-            </strong>
-            Eum aliquid suscipit perferendis, deleniti unde doloremque dolor
-            dolorem consequatur esse consequuntur expedita reiciendis nulla
-            inventore, nostrum ipsam dicta earum dignissimos tempore!
-          </p>
-        </div>
-
-        <pre>
-          <code>{code}</code>
-        </pre>
+        <ReactMarkdown>{post.body}</ReactMarkdown>
       </PostContent>
     </div>
   )

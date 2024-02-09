@@ -1,4 +1,6 @@
+import { useContext } from 'react'
 import { SearchContainer } from './styles'
+import { GitHubContext } from '../../contexts/GitHubContext'
 
 export function Search() {
   return (

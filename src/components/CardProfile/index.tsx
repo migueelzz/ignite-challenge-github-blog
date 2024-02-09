@@ -1,34 +1,55 @@
-import { FaUserGroup, FaGithub, FaBuilding } from 'react-icons/fa6'
-import { CardContainer, CardContent } from './styles'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { GitHubUser } from '../../pages/Home'
+import { useEffect, useState } from 'react'
 
-interface CardProfileProps {
-  user: GitHubUser
+import { api } from '../../lib/axios'
+
+import { NavLink } from 'react-router-dom'
+
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { FaUserGroup, FaGithub, FaBuilding } from 'react-icons/fa6'
+
+import { CardContainer, CardContent, CardFooter, CardInfo } from './styles'
+
+interface User {
+  name: string
+  avatar_url: string
+  bio: string
+  login: string
+  html_url: string
+  followers: number
+  location: string
 }
 
-export function CardProfile({ user }: CardProfileProps) {
+export function CardProfile() {
+  const [user, setUser] = useState({} as User)
+  async function fetchUser() {
+    const response = await api.get('users/migueelzz')
+    setUser(response.data)
+  }
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
+
   return (
     <CardContainer>
       <img src={user.avatar_url} alt="" />
 
       <CardContent>
-        <div>
-          <h1>{user.name}</h1>
-          <a href={user.html_url}>
-            <span>GitHub</span>
-            <FaExternalLinkAlt size={12} />
-          </a>
-        </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea vel illo
-          repellendus quasi ducimus, nemo harum nesciunt impedit, cupiditate
-        </p>
+        <CardInfo>
+          <div>
+            <h1>{user.name}</h1>
+            <NavLink to={user.html_url} target="_blank">
+              <span>GitHub</span>
+              <FaExternalLinkAlt size={12} />
+            </NavLink>
+          </div>
+          <p>{user.bio}</p>
+        </CardInfo>
 
-        <footer>
+        <CardFooter>
           <span>
             <FaGithub />
-            migueelzz
+            {user.login}
           </span>
           <span>
             <FaBuilding />
@@ -38,7 +59,7 @@ export function CardProfile({ user }: CardProfileProps) {
             <FaUserGroup />
             {user.followers} seguidores
           </span>
-        </footer>
+        </CardFooter>
       </CardContent>
     </CardContainer>
   )

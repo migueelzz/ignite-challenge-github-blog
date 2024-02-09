@@ -1,32 +1,35 @@
-import { CardPostContainer } from './styles'
+import { Post } from '../../contexts/GitHubContext'
+
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
-interface CardPostType {
-  id: number
-  name: string
-  description: string
-  created_at: string
-  html_url: string
-}
 
+// import { Truncate } from '../../utils/truncate'
+
+import { CardPostContainer } from './styles'
 interface CardPostProps {
-  repo: CardPostType
+  post: Post
+  href: string
 }
 
-export function CardPost({ repo }: CardPostProps) {
+export function CardPost({ post, href }: CardPostProps) {
   return (
-    <CardPostContainer to="#">
+    <CardPostContainer to={href}>
       <div>
-        <h1>{repo.name}</h1>
+        <h1>{post.title}</h1>
         <span>
           {' '}
-          {formatDistanceToNow(repo.created_at, {
+          {formatDistanceToNow(post.created_at, {
             addSuffix: true,
             locale: ptBR,
           })}
         </span>
       </div>
-      <p>{repo.description}</p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, vitae
+        fugiat. Id ea necessitatibus a nesciunt dolor officia obcaecati sit,
+        molestiae consequatur illum. Alias possimus deleniti suscipit nisi, odio
+        facere!
+      </p>
     </CardPostContainer>
   )
 }

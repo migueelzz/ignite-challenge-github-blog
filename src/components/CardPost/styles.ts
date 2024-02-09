@@ -19,14 +19,14 @@ export const CardPostContainer = styled(NavLink)`
   }
 
   > div {
+    width: 100%;
+    max-width: 352px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     padding-bottom: 1.25rem;
 
     h1 {
-      width: 100%;
-      max-width: 283px;
       font-size: 1.25rem;
       color: ${(props) => props.theme['base-title']};
     }
