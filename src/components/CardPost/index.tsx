@@ -1,26 +1,32 @@
-import { Truncate } from '../../utils/truncate'
 import { CardPostContainer } from './styles'
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale/pt-BR'
+interface CardPostType {
+  id: number
+  name: string
+  description: string
+  created_at: string
+  html_url: string
+}
 
-export function CardPost() {
+interface CardPostProps {
+  repo: CardPostType
+}
+
+export function CardPost({ repo }: CardPostProps) {
   return (
     <CardPostContainer to="#">
       <div>
-        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
-        <span>Há 1 dia</span>
+        <h1>{repo.name}</h1>
+        <span>
+          {' '}
+          {formatDistanceToNow(repo.created_at, {
+            addSuffix: true,
+            locale: ptBR,
+          })}
+        </span>
       </div>
-      <p>
-        {Truncate(`Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum
-        totam unde distinctio, officiis reiciendis molestiae id mollitia
-        quisquam nesciunt consequuntur voluptate! Dolorum modi hic nostrum, at
-        magni pariatur explicabo repellendus? Lorem ipsum dolor sit amet
-        consectetur adipisicing elit. Voluptatum totam unde distinctio, officiis
-        reiciendis molestiae id mollitia quisquam nesciunt consequuntur
-        voluptate! Dolorum modi hic nostrum, at magni pariatur explicabo
-        repellendus? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Voluptatum totam unde distinctio, officiis reiciendis molestiae id
-        mollitia quisquam nesciunt consequuntur voluptate! Dolorum modi hic
-        nostrum, at magni pariatur explicabo repellendus?`)}
-      </p>
+      <p>{repo.description}</p>
     </CardPostContainer>
   )
 }

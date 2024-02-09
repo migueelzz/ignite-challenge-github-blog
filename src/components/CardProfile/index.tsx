@@ -1,15 +1,21 @@
 import { FaUserGroup, FaGithub, FaBuilding } from 'react-icons/fa6'
 import { CardContainer, CardContent } from './styles'
 import { FaExternalLinkAlt } from 'react-icons/fa'
-export function CardProfile() {
+import { GitHubUser } from '../../pages/Home'
+
+interface CardProfileProps {
+  user: GitHubUser
+}
+
+export function CardProfile({ user }: CardProfileProps) {
   return (
     <CardContainer>
-      <img src="https://github.com/migueelzz.png" alt="" />
+      <img src={user.avatar_url} alt="" />
 
       <CardContent>
         <div>
-          <h1>Miguel Lemes</h1>
-          <a href="#">
+          <h1>{user.name}</h1>
+          <a href={user.html_url}>
             <span>GitHub</span>
             <FaExternalLinkAlt size={12} />
           </a>
@@ -26,11 +32,11 @@ export function CardProfile() {
           </span>
           <span>
             <FaBuilding />
-            Rocketseat
+            {user.location}
           </span>
           <span>
             <FaUserGroup />
-            32 seguidores
+            {user.followers} seguidores
           </span>
         </footer>
       </CardContent>
