@@ -1,13 +1,18 @@
-import { Post } from '../../contexts/GitHubContext'
-
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
+import { CardPostContainer } from './styles'
+
 // import { Truncate } from '../../utils/truncate'
 
-import { CardPostContainer } from './styles'
+interface PostType {
+  title: string
+  body: string
+  number: number
+  created_at: Date
+}
 interface CardPostProps {
-  post: Post
+  post: PostType
   href: string
 }
 
@@ -24,12 +29,7 @@ export function CardPost({ post, href }: CardPostProps) {
           })}
         </span>
       </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, vitae
-        fugiat. Id ea necessitatibus a nesciunt dolor officia obcaecati sit,
-        molestiae consequatur illum. Alias possimus deleniti suscipit nisi, odio
-        facere!
-      </p>
+      <p>{post.body}</p>
     </CardPostContainer>
   )
 }

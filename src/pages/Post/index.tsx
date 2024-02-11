@@ -1,7 +1,7 @@
-import { useCallback, useContext, useEffect } from 'react'
-import { GitHubContext } from '../../contexts/GitHubContext'
+import { useCallback, useEffect, useState } from 'react'
 
 import { NavLink, useParams } from 'react-router-dom'
+import { api } from '../../lib/axios'
 
 import ReactMarkdown from 'react-markdown'
 
@@ -18,19 +18,35 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import { PostContent, PostInfo } from './styles'
 
-export function Post() {
-  const { postId } = useParams()
-  const { post, getIssuesRepoByNumber } = useContext(GitHubContext)
+type PostType = {
+  title: string
+  body: string
+  number: number
+  comments: number
+  created_at: Date
 
-  const getIssues = useCallback(() => {
-    if (postId) {
-      getIssuesRepoByNumber(postId)
-    }
-  }, [postId, getIssuesRepoByNumber])
+  user: {
+    name: string
+    login: string
+  }
+}
+
+export function Post() {
+  const { issuesNumber } = useParams()
+  const [post, setPost] = useState({} as PostType)
+
+  const loadPost = useCallback(async () => {
+    const response = await api.get(
+      `/repos/migueelzz/ignite-challenge-github-blog/issues/${issuesNumber}`,
+    )
+
+    // console.log(response.data)
+    setPost(response.data)
+  }, [issuesNumber])
 
   useEffect(() => {
-    getIssues()
-  }, [getIssues])
+    loadPost()
+  }, [loadPost])
 
   return (
     <div>
@@ -42,7 +58,7 @@ export function Post() {
               voltar
             </span>
           </NavLink>
-          <NavLink to={post.user.html_url} target="_blank">
+          <NavLink to="#" target="_blank">
             <span>
               ver no github
               <FaExternalLinkAlt size={12} />
@@ -50,19 +66,21 @@ export function Post() {
           </NavLink>
         </header>
 
-        <h1>{post?.title}</h1>
+        <h1>{post.title}</h1>
         <footer>
           <div>
             <FaGithub />
-            <span>{post.user.login}</span>
+            {/* Erro ao tentar mostrar em tela o user.login */}
+            {/* <span>{post.user.login}</span> */}
           </div>
           <div>
             <FaCalendarDay />
             <span>
-              {formatDistanceToNow(post.created_at, {
+              {/* Erro ao tentar passar  created_at para date-fns */}
+              {/* {formatDistanceToNow(post.created_at, {
                 addSuffix: true,
                 locale: ptBR,
-              })}
+              })} */}
             </span>
           </div>
           <div>
