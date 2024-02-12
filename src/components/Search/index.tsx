@@ -3,8 +3,8 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { SearchContainer } from './styles'
-import { useCallback, useEffect } from 'react'
-import { api } from '../../lib/axios'
+import { useContext } from 'react'
+import { PostContext } from '../../contexts/PostContext'
 
 interface PostType {
   title: string
@@ -19,56 +19,19 @@ const searchFormSchema = z.object({
 
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
-interface SearchProps {
-  onSearch: (filteredPosts: PostType[]) => void
-}
-
-export function Search({ onSearch }: SearchProps) {
-  const { register, watch } = useForm<SearchFormInputs>({
+export function Search() {
+  const { register } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFormSchema),
   })
 
-  const query = watch('query')
+  const { fetchPosts } = useContext(PostContext)
 
-  // const fetchPosts = useCallback(
-  //   async (query: string) => {
-  //     try {
-  //       let url
-  //       if (query) {
-  //         url = `repo:migueelzz/ignite-challenge-github-blog ${query}`
-  //       } else {
-  //         url = 'repo:migueelzz/ignite-challenge-github-blog'
-  //       }
-  //       const response = await api.get('/search/issues', {
-  //         params: {
-  //           q: url,
-  //         },
-  //       })
-  //       onSearch(response.data.items)
-  //     } catch (error) {
-  //       console.error('Error fetching posts:', error)
-  //     }
-  //   },
-  //   [onSearch],
-  // )
+  // const query = watch('query')
 
-  const fetchPosts = useCallback(async () => {
-    try {
-      const url = 'repo:migueelzz/ignite-challenge-github-blog'
-      const response = await api.get('/search/issues', {
-        params: {
-          q: url,
-        },
-      })
-      onSearch(response.data.items)
-    } catch (error) {
-      console.error('Error fetching posts:', error)
-    }
-  }, [onSearch])
-
-  useEffect(() => {
-    fetchPosts()
-  }, [fetchPosts])
+  const handleSearch = async (query: string) => {
+    console.log(query)
+    await fetchPosts(query)
+  }
 
   return (
     <SearchContainer>
@@ -82,6 +45,7 @@ export function Search({ onSearch }: SearchProps) {
           type="text"
           placeholder="Buscar conteúdo"
           {...register('query')}
+          onChange={(e) => handleSearch(e.target.value)}
         />
       </form>
     </SearchContainer>

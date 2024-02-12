@@ -23,7 +23,7 @@ type PostType = {
   body: string
   number: number
   comments: number
-  created_at: Date
+  created_at: number
 
   user: {
     name: string
@@ -31,9 +31,21 @@ type PostType = {
   }
 }
 
+const TemplatePost: PostType = {
+  title: '',
+  body: '',
+  number: 0,
+  comments: 0,
+  created_at: Date.now(),
+  user: {
+    name: '',
+    login: '',
+  },
+}
+
 export function Post() {
   const { issuesNumber } = useParams()
-  const [post, setPost] = useState({} as PostType)
+  const [post, setPost] = useState<PostType>(TemplatePost)
 
   const loadPost = useCallback(async () => {
     const response = await api.get(
@@ -71,21 +83,21 @@ export function Post() {
           <div>
             <FaGithub />
             {/* Erro ao tentar mostrar em tela o user.login */}
-            {/* <span>{post.user.login}</span> */}
+            <span>{post.user.login}</span>
           </div>
           <div>
             <FaCalendarDay />
             <span>
               {/* Erro ao tentar passar  created_at para date-fns */}
-              {/* {formatDistanceToNow(post.created_at, {
+              {formatDistanceToNow(post.created_at, {
                 addSuffix: true,
                 locale: ptBR,
-              })} */}
+              })}
             </span>
           </div>
           <div>
             <FaComment />
-            <span>{post.comments} comentários</span>
+            <span>{post.comments} comentÃ¡rios</span>
           </div>
         </footer>
       </PostInfo>

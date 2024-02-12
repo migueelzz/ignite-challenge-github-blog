@@ -2,15 +2,10 @@ import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
 import { CardPostContainer } from './styles'
+import { PostType } from '../../contexts/PostContext'
 
 // import { Truncate } from '../../utils/truncate'
 
-interface PostType {
-  title: string
-  body: string
-  number: number
-  created_at: Date
-}
 interface CardPostProps {
   post: PostType
   href: string

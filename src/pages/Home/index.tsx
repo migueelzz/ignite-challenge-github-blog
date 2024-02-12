@@ -1,39 +1,26 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { CardPost } from '../../components/CardPost'
 import { CardProfile } from '../../components/CardProfile'
 import { Search } from '../../components/Search'
 
 import { CardContainer, HomeContainer } from './styles'
-
-interface PostType {
-  title: string
-  body: string
-  number: number
-  created_at: Date
-}
+import { PostContext } from '../../contexts/PostContext'
 
 export function Home() {
-  const [posts, setPosts] = useState<PostType[]>([])
-
-  const handleSearch = (filteredPosts: PostType[]) => {
-    setPosts(filteredPosts)
-  }
+  const { posts } = useContext(PostContext)
 
   return (
     <HomeContainer>
       <CardProfile />
-      <Search onSearch={handleSearch} />
-
+      <Search />
       <CardContainer>
-        {posts.map((post) => {
-          return (
-            <CardPost
-              key={post.number}
-              post={post}
-              href={`/post/${post.number}`}
-            />
-          )
-        })}
+        {posts.map((post) => (
+          <CardPost
+            key={post.number}
+            post={post}
+            href={`/post/${post.number}`}
+          />
+        ))}
       </CardContainer>
     </HomeContainer>
   )
