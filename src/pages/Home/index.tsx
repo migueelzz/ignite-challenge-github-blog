@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { CardPost } from '../../components/CardPost'
 import { CardProfile } from '../../components/CardProfile'
 import { Search } from '../../components/Search'
