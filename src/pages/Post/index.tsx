@@ -97,7 +97,7 @@ export function Post() {
           </div>
           <div>
             <FaComment />
-            <span>{post.comments} comentÃ¡rios</span>
+            <span>{post.comments} comentárioos</span>
           </div>
         </footer>
       </PostInfo>

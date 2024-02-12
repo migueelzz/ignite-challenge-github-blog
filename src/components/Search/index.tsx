@@ -24,7 +24,7 @@ export function Search() {
     resolver: zodResolver(searchFormSchema),
   })
 
-  const { fetchPosts } = useContext(PostContext)
+  const { posts, fetchPosts } = useContext(PostContext)
 
   // const query = watch('query')
 
@@ -37,7 +37,7 @@ export function Search() {
     <SearchContainer>
       <div>
         <h2>Publicações</h2>
-        <span>6 publicações</span>
+        <span>{posts.length} publicações</span>
       </div>
 
       <form>
