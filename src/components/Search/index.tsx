@@ -6,13 +6,6 @@ import { SearchContainer } from './styles'
 import { useContext } from 'react'
 import { PostContext } from '../../contexts/PostContext'
 
-interface PostType {
-  title: string
-  body: string
-  number: number
-  created_at: Date
-}
-
 const searchFormSchema = z.object({
   query: z.string(),
 })
